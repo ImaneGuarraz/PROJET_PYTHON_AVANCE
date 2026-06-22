@@ -4,13 +4,32 @@ Création d'une application desktop avec l'utilisation du module Python Tkinter.
 
 ## Structure du projet 
 
-project/
-│── app.py                # Point d'entrée Tkinter
-│── database.py           # Gestion SQLite
-│── fetcher.py            # Téléchargement JSON
-│── ui/
-│     ├── main_window.py  # Fenêtre principale
-│     ├── menu_bar.py     # Menu
-│     └── charts.py       # Graphiques matplotlib
-│── assets/               # Icônes, thèmes, etc.
-│── data.db               # Base SQLite
+Python_App_Desktop/
+│
+├── main.py                # Fenêtre Tkinter + menus + boutons
+├── database.py            # Connexion SQLite + CRUD
+├── api.py                 # Téléchargement JSON depuis Internet
+├── charts.py              # Graphiques matplotlib
+├── config.py              # Options (couleurs, polices…)
+└── app_desktop_python.db  # Base SQLite (créée automatiquement)
+
+
+## Les outils 
+
+- MySQL
+- TablePlus
+- Visual Studio Code
+
+
+## Les Vue d’ensemble du projet
+
+Ton appli va faire :
+
+- Télécharger des données JSON depuis Internet
+- Les stocker dans une base SQLite (app_desktop_python.db)
+- Afficher des résumés (agrégations SQL)
+- Afficher des graphiques dans une fenêtre Tkinter
+- Proposer un menu pour :
+  - effacer la base
+  - télécharger les données
+  -  changer des options (couleurs, polices…)
