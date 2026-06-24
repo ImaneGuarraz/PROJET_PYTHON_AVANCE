@@ -10,7 +10,7 @@ from image_processing import download_image, process_images
 from report_word import create_report_docx
 
 
-IMAGE1_URL = "https://upload.wikimedia.org/wikipedia/commons/3/35/Frankenstein%27s_monster_%281931%29.jpg"   # image #1
+IMAGE1_URL = "https://i.imgur.com/3ZQ3ZQF.jpeg"   # image libre de droit 
 
 
 def main():
