@@ -1,0 +1,8 @@
+tk
+requests
+pillow
+matplotlib
+python-docx
+pandas
+openpyxl
+python-dotenv
