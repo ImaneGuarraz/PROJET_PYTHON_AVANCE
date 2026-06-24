@@ -60,7 +60,8 @@ projet_partie2/
 │
 ├── assets/
 │   ├── frankenstein_local.jpg
-│   └── frankenstein_distribution.png   ← ton logo
+│   └── frankenstein_distribution.png  
+│   └── pg84.txt  
 │
 ├── main.py
 ├── image_processing.py
@@ -76,7 +77,7 @@ projet_partie2/
 > charts_book.py : création du graphique de distribution  
 > report_word.py : génération du document Word complet  
 > partie2_main.py : script principal orchestrant toutes les étapes  
-> assets/logo.png : logo noir et blanc utilisé pour le collage  
+> assets/ : image, logo & texte téléchargé
 > README.md : documentation du projet  
 
 ---
