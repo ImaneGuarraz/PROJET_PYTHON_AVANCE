@@ -25,7 +25,12 @@ def extract_metadata_and_first_chapter(text: str) -> dict:
     title = title_match.group(1).strip() if title_match else "Unknown title"   # nettoie le titre
     author = author_match.group(1).strip() if author_match else "Unknown author"   # nettoie l'auteur
 
-    chapter_start = re.search(r"\bCHAPTER\s+I\b|\bCHAPTER\s+1\b", text)   # détecte début chapitre 1
+    chapter_start = re.search(
+    r"^\s*(CHAPTER\s+I|CHAPTER\s+1|CHAPTER\s+ONE|Chapter\s+I|Chapter\s+1)\s*$",
+    text,
+    flags=re.MULTILINE
+    ) # détecte début chapitre 1
+    
     if not chapter_start:
         raise ValueError("Impossible de trouver le début du premier chapitre")   # erreur si absent
 
