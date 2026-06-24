@@ -34,7 +34,7 @@ def main():
         img1_path = IMAGE1_LOCAL  # définit le chemin de l'image locale
 
         print("Traitement des images...")
-        final_image_path = process_images(img1_path, "assets/logo.png", "image_finale.jpg")  # traite l'image et colle le logo
+        final_image_path = process_images(img1_path, "assets/frankenstein_distribution.png", "image_finale.jpg")  # traite l'image et colle le logo
 
         print("Création du document Word...")
         output_docx = create_report_docx(meta, stats, chart_path, final_image_path, "Rapport_Frankenstein.docx")  # génère le document word
@@ -51,4 +51,3 @@ def main():
 
 if __name__ == "__main__":
     main()  # exécute la fonction principale
-
