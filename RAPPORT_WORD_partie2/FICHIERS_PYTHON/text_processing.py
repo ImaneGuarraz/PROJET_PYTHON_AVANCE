@@ -1,78 +1,67 @@
 # text_processing.py
 
 """
-Téléchargement et analyse du livre Frankenstein
+module chargé de :
+- lire le livre en local
+- extraire le titre, l'auteur et le chapitre 1
+- analyser les paragraphes
 """
 
-import re   # gère les expressions régulières
-import math   # gère l'arrondi
-from collections import Counter   # compte les occurrences
-import requests   # télécharge le texte
-
-FRANKENSTEIN_URL = "https://www.gutenberg.org/cache/epub/84/pg84.txt"   # URL du livre
+import re  # importe regex pour analyser le texte
+from collections import Counter  # importe counter pour compter les mots
 
 
-def download_book(url: str = FRANKENSTEIN_URL) -> str:
-    resp = requests.get(url, timeout=60)   # télécharge le texte brut
-    resp.raise_for_status()   # lève une erreur si statut HTTP invalide
-    return resp.text   # retourne le texte complet
+def download_book():
+    # lit le livre en local pour éviter les erreurs réseau
+    with open("assets/pg84.txt", "r", encoding="utf-8") as f:  # ouvre le fichier texte local
+        return f.read()  # retourne le contenu du livre
 
 
-def extract_metadata_and_first_chapter(text: str) -> dict:
-    title_match = re.search(r"Title:\s*(.+)", text)   # extrait le titre
-    author_match = re.search(r"Author:\s*(.+)", text)   # extrait l'auteur
+def extract_metadata_and_first_chapter(text: str):
+    # extrait le titre du livre
+    title_match = re.search(r"Title:\s*(.*)", text)  # cherche la ligne du titre
+    title = title_match.group(1).strip() if title_match else "Titre inconnu"  # récupère le titre
 
-    title = title_match.group(1).strip() if title_match else "Unknown title"   # nettoie le titre
-    author = author_match.group(1).strip() if author_match else "Unknown author"   # nettoie l'auteur
-    
-    chapter_start = re.search(
-    r"^\s*(CHAPTER\s+I|CHAPTER\s+1|CHAPTER\s+ONE|Chapter\s+I|Chapter\s+1)\s*$",
-    text,
-    flags=re.MULTILINE
-    ) # détecte début chapitre 1
+    # extrait l'auteur du livre
+    author_match = re.search(r"Author:\s*(.*)", text)  # cherche la ligne de l'auteur
+    author = author_match.group(1).strip() if author_match else "Auteur inconnu"  # récupère l'auteur
 
-    if not chapter_start:
-        raise ValueError("Impossible de trouver le début du premier chapitre")   # erreur si absent
+    # extrait le chapitre 1
+    chapter_match = re.search(r"CHAPTER I(.*?)(CHAPTER II|$)", text, re.DOTALL)  # isole le chapitre 1
+    chapter = chapter_match.group(1).strip() if chapter_match else ""  # récupère le texte du chapitre
 
-    start_idx = chapter_start.end()   # position après le titre du chapitre
-
-    chapter_end = re.search(r"\nCHAPTER\s+II\b|\nCHAPTER\s+2\b", text[start_idx:])   # détecte chapitre 2
-    if chapter_end:
-        end_idx = start_idx + chapter_end.start()   # calcule la fin du chapitre 1
-        first_chapter = text[start_idx:end_idx]   # extrait le chapitre
-    else:
-        first_chapter = text[start_idx:]   # prend tout si pas de chapitre 2
-
+    # retourne les informations extraites
     return {
-        "title": title,   # retourne le titre
-        "author": author,   # retourne l'auteur
-        "first_chapter": first_chapter.strip()   # retourne le chapitre nettoyé
+        "title": title,  # stocke le titre
+        "author": author,  # stocke l'auteur
+        "first_chapter": chapter  # stocke le chapitre 1
     }
 
 
-def paragraph_stats(chapter_text: str) -> dict:
-    raw_paragraphs = [p.strip() for p in chapter_text.split("\n\n") if p.strip()]   # découpe en paragraphes
+def paragraph_stats(chapter_text: str):
+    # découpe le chapitre en paragraphes
+    paragraphs = [p.strip() for p in chapter_text.split("\n\n") if p.strip()]  # isole les paragraphes
 
-    word_counts = []   # liste des mots par paragraphe
-    for p in raw_paragraphs:
-        words = re.findall(r"\b\w+\b", p)   # détecte les mots
-        word_counts.append(len(words))   # ajoute le nombre de mots
+    # calcule le nombre de mots par paragraphe
+    lengths = [len(p.split()) for p in paragraphs]  # compte les mots dans chaque paragraphe
 
-    rounded_counts = [int(math.floor(n / 10) * 10) for n in word_counts]   # arrondit à la dizaine
-    distribution = Counter(rounded_counts)   # compte les occurrences
+    # arrondit les longueurs à la dizaine
+    rounded = [((n // 10) * 10) for n in lengths]  # arrondit à la dizaine inférieure
 
+    # construit la distribution
+    distribution = Counter(rounded)  # compte combien de paragraphes par tranche de mots
+
+    # calcule les statistiques globales
     stats = {
-        "nb_paragraphs": len(raw_paragraphs),   # nombre total de paragraphes
-        "total_words": sum(word_counts),   # total de mots
-        "min_words": min(word_counts),   # paragraphe le plus court
-        "max_words": max(word_counts),   # paragraphe le plus long
-        "avg_words": sum(word_counts) / len(word_counts),   # moyenne
+        "nb_paragraphs": len(paragraphs),  # nombre total de paragraphes
+        "total_words": sum(lengths),  # total de mots
+        "min_words": min(lengths) if lengths else 0,  # minimum
+        "max_words": max(lengths) if lengths else 0,  # maximum
+        "avg_words": sum(lengths) / len(lengths) if lengths else 0  # moyenne
     }
 
+    # retourne les résultats
     return {
-        "raw_paragraphs": raw_paragraphs,   # liste brute
-        "word_counts": word_counts,   # mots par paragraphe
-        "rounded_counts": rounded_counts,   # arrondis
-        "distribution": distribution,   # distribution
-        "stats": stats   # statistiques globales
+        "distribution": distribution,  # distribution des paragraphes
+        "stats": stats  # statistiques globales
     }
