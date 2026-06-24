@@ -13,7 +13,7 @@ FRANKENSTEIN_URL = "https://www.gutenberg.org/cache/epub/84/pg84.txt"   # URL du
 
 
 def download_book(url: str = FRANKENSTEIN_URL) -> str:
-    resp = requests.get(url, timeout=15)   # télécharge le texte brut
+    resp = requests.get(url, timeout=60)   # télécharge le texte brut
     resp.raise_for_status()   # lève une erreur si statut HTTP invalide
     return resp.text   # retourne le texte complet
 
@@ -24,13 +24,13 @@ def extract_metadata_and_first_chapter(text: str) -> dict:
 
     title = title_match.group(1).strip() if title_match else "Unknown title"   # nettoie le titre
     author = author_match.group(1).strip() if author_match else "Unknown author"   # nettoie l'auteur
-
+    
     chapter_start = re.search(
     r"^\s*(CHAPTER\s+I|CHAPTER\s+1|CHAPTER\s+ONE|Chapter\s+I|Chapter\s+1)\s*$",
     text,
     flags=re.MULTILINE
     ) # détecte début chapitre 1
-    
+
     if not chapter_start:
         raise ValueError("Impossible de trouver le début du premier chapitre")   # erreur si absent
 
