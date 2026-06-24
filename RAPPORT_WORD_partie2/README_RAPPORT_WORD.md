@@ -65,6 +65,7 @@ Partie2/
 ├── partie2_main.py  
 ├── assets/  
 │   └── logo.png  
+│   └── frankenstein_local.jpg 
 └── README.md  
 
 > text_processing.py : téléchargement du livre + extraction du chapitre + analyse textuelle  
