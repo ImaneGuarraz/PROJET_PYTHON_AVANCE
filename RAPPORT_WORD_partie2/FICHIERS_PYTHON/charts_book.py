@@ -1,4 +1,5 @@
 # charts_book.py
+
 """
 Graphique de distribution des longueurs de paragraphes
 """
