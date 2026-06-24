@@ -1,4 +1,4 @@
-# Projet : Analyse d’un Livre & Génération Automatique d’un Rapport Word
+# 📚 Projet : Analyse d’un Livre & Génération Automatique d’un Rapport Word
 
 #### Auteur :  
 👩🏽‍💻 Imane
